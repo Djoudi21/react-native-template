@@ -1,12 +1,18 @@
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {persistor, store} from './src/store';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {RootStackRouter} from './src/routes/RootStack';
+import {NavigationContainer} from '@react-navigation/native';
 
 export function App() {
-
   return (
-    <SafeAreaView>
-      <Text>HEllO</Text>
-    </SafeAreaView>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <NavigationContainer>
+          <RootStackRouter />
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }
-
