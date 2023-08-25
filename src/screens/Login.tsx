@@ -25,7 +25,7 @@ export function Login({navigation}: LoginNavigationProps) {
         <View>
           <TextInput
             ref={auth.passwordTextInputRef}
-            onBlur={() => auth.passwordValidation()}
+            // onBlur={() => auth.passwordValidation()}
             placeholder="Password"
             onFocus={auth.handleFocusPasswordInput}
             onChangeText={auth.setPassword}
@@ -39,7 +39,7 @@ export function Login({navigation}: LoginNavigationProps) {
           )}
         </View>
 
-        <Pressable onPress={() => auth.handleSubmit(navigation)}>
+        <Pressable onPress={() => auth.handleLogin(navigation)}>
           <Text>Validez</Text>
         </Pressable>
 

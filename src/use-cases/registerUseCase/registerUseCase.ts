@@ -1,5 +1,5 @@
-import { User } from '../loginUseCase/types';
-import { UserRepository } from '../../repositories/interfaces/UserRepository';
+import {User} from '../loginUseCase/types';
+import {UserRepository} from '../../repositories/interfaces/UserRepository';
 
 export class RegisterUseCase {
   private userRepository: UserRepository;

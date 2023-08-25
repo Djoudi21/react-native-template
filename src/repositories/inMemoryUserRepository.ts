@@ -1,5 +1,5 @@
-import { UserRepository } from './interfaces/UserRepository';
-import { User } from '../use-cases/loginUseCase/types';
+import {UserRepository} from './interfaces/UserRepository';
+import {User} from '../use-cases/loginUseCase/types';
 import {
   CreatedUserResponse,
   ErrorResponse,

@@ -1,5 +1,6 @@
 import {useRef, useState} from 'react';
 import {LoginUseCase} from '../use-cases/loginUseCase/loginUseCase';
+import {RegisterUseCase} from '../use-cases/registerUseCase/registerUseCase';
 import {InMemoryUserRepository} from '../repositories/inMemoryUserRepository';
 import {useDispatch} from 'react-redux';
 import {setTokens} from '../store/userSlice';
@@ -16,21 +17,22 @@ export default function useAuth() {
   const dispatch = useDispatch();
   const userRepository = new InMemoryUserRepository();
   const loginUseCase = new LoginUseCase(userRepository);
+  const registerUseCase = new RegisterUseCase(userRepository);
   const emailTextInputRef = useRef(null);
   const passwordTextInputRef = useRef(null);
-  async function handleSubmit(navigation: any) {
-    if (emailTextInputRef.current) {
-      // @ts-ignore
-      emailTextInputRef.current.blur();
-    }
+  async function handleLogin(navigation: any) {
+    // if (emailTextInputRef.current) {
+    //   // @ts-ignore
+    //   emailTextInputRef.current.blur();
+    // }
+    //
+    // if (passwordTextInputRef.current) {
+    //   // @ts-ignore
+    //   passwordTextInputRef.current.blur();
+    // }
 
-    if (passwordTextInputRef.current) {
-      // @ts-ignore
-      passwordTextInputRef.current.blur();
-    }
-
-    emailValidation();
-    passwordValidation();
+    // emailValidation();
+    // passwordValidation();
     if (!isEmailValid || !isPasswordValid) {
       return;
     }
@@ -39,11 +41,11 @@ export default function useAuth() {
       password,
     };
     try {
-      const response = await loginUseCase.login(credentials);
-      if (response.data.status !== 200) {
+      const res = await loginUseCase.login(credentials);
+      if (!res.tokens) {
         return null;
       }
-      const tokens = response.data.tokens;
+      const tokens = res.tokens;
       dispatch(setTokens(tokens));
       navigation.push('Home');
     } catch (e) {
@@ -53,29 +55,65 @@ export default function useAuth() {
     }
   }
 
-  function emailValidation() {
-    if (!email.length) {
-      setIsEmailValid(false);
-      setEmailErrorMessage('Please enter an email');
+  async function handleRegister(navigation: any) {
+    // if (emailTextInputRef.current) {
+    //   // @ts-ignore
+    //   emailTextInputRef.current.blur();
+    // }
+    //
+    // if (passwordTextInputRef.current) {
+    //   // @ts-ignore
+    //   passwordTextInputRef.current.blur();
+    // }
+
+    // emailValidation();
+    // passwordValidation();
+    if (!isEmailValid || !isPasswordValid) {
       return;
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-      setIsEmailValid(false);
-      setEmailErrorMessage('Email is not valid');
-      return;
-    } else {
-      setIsEmailValid(true);
+    }
+    const credentials = {
+      email,
+      password,
+    };
+    try {
+      await registerUseCase.register(credentials);
+      const res = await loginUseCase.login(credentials);
+      if (!res.tokens) {
+        return null;
+      }
+      const tokens = res.tokens;
+      dispatch(setTokens(tokens));
+      navigation.push('Home');
+    } catch (e) {
+      // @ts-ignore
+      const errorMessage = setSubmissionErrorMessage(e.response.data.message);
+      setFormSubmissionErrorMessage(errorMessage);
     }
   }
 
-  function passwordValidation() {
-    if (!password.length) {
-      setIsPasswordValid(false);
-      setPasswordErrorMessage('Please enter a paswword');
-      return;
-    } else {
-      setIsPasswordValid(true);
-    }
-  }
+  // function emailValidation() {
+  //   if (!email.length) {
+  //     setIsEmailValid(false);
+  //     setEmailErrorMessage('Please enter an email');
+  //     return;
+  //   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+  //     setIsEmailValid(false);
+  //     setEmailErrorMessage('Email is not valid');
+  //     return;
+  //   } else {
+  //     setIsEmailValid(true);
+  //   }
+  // }
+
+  // function passwordValidation() {
+  //   if (!password.length) {
+  //     setIsPasswordValid(false);
+  //     setPasswordErrorMessage('Please enter a paswword');
+  //     return;
+  //   } else {
+  //     setIsPasswordValid(true);
+  //   }
+  // }
 
   function setSubmissionErrorMessage(message: string): string {
     switch (message) {
@@ -88,10 +126,10 @@ export default function useAuth() {
     navigation.push(routeName);
   }
 
-  function handleFocusEmailInput() {
-    setEmail('');
-    setFormSubmissionErrorMessage('');
-  }
+  // function handleFocusEmailInput() {
+  //   setEmail('');
+  //   setFormSubmissionErrorMessage('');
+  // }
 
   function handleFocusPasswordInput() {
     setPassword('');
@@ -99,12 +137,13 @@ export default function useAuth() {
   }
 
   return {
-    handleSubmit,
-    emailValidation,
-    passwordValidation,
+    handleLogin,
+    handleRegister,
+    // emailValidation,
+    // passwordValidation,
     handleRedirect,
     handleFocusPasswordInput,
-    handleFocusEmailInput,
+    // handleFocusEmailInput,
     emailErrorMessage,
     passwordErrorMessage,
     emailTextInputRef,
