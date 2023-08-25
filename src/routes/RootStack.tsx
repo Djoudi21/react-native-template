@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Home} from '../screens/Home';
 import {Login} from '../screens/Login';
 import {Register} from '../screens/Register';
 import {useSelector} from 'react-redux';
 import {Text} from 'react-native';
+import {TabsStack} from './TabsStack';
 
 const RootStack = createNativeStackNavigator();
 
@@ -16,7 +16,7 @@ export function RootStackRouter() {
     async function checkTokensAndSetNavigation() {
       try {
         if (tokens.accessToken !== null) {
-          setInitialRoute('Home');
+          setInitialRoute('Tab');
         } else {
           setInitialRoute('Login');
         }
@@ -29,7 +29,7 @@ export function RootStackRouter() {
   }, []);
 
   return initialRoute !== null ? (
-    <RootStack.Navigator initialRouteName={initialRoute as 'Login' | 'Home'}>
+    <RootStack.Navigator initialRouteName={initialRoute as 'Login' | 'Tab'}>
       <RootStack.Group>
         <RootStack.Screen
           name="Login"
@@ -46,8 +46,8 @@ export function RootStackRouter() {
           }}
         />
         <RootStack.Screen
-          name="Home"
-          component={Home}
+          name="Tab"
+          component={TabsStack}
           options={{
             headerShown: false,
           }}

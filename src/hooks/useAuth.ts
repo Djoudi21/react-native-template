@@ -47,7 +47,7 @@ export default function useAuth() {
       }
       const tokens = res.tokens;
       dispatch(setTokens(tokens));
-      navigation.push('Home');
+      navigation.push('Tab');
     } catch (e) {
       // @ts-ignore
       const errorMessage = setSubmissionErrorMessage(e.response.data.message);
@@ -83,7 +83,7 @@ export default function useAuth() {
       }
       const tokens = res.tokens;
       dispatch(setTokens(tokens));
-      navigation.push('Home');
+      navigation.push('Tab');
     } catch (e) {
       // @ts-ignore
       const errorMessage = setSubmissionErrorMessage(e.response.data.message);
