@@ -26,6 +26,8 @@ export function RootStackRouter() {
     }
 
     checkTokensAndSetNavigation().then();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return initialRoute !== null ? (

@@ -1,9 +1,8 @@
 import {Pressable, SafeAreaView, Text, TextInput, View} from 'react-native';
 import React from 'react';
 import useAuth from '../hooks/useAuth';
-import {LoginNavigationProps} from '../types';
 
-export function Login({navigation}: LoginNavigationProps) {
+export function Login({navigation}: any) {
   const auth = useAuth();
   return (
     <SafeAreaView>
